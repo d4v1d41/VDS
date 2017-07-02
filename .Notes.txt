@@ -1,0 +1,3 @@
+general.css 1062 Background when device res lower than 767px.
+
+

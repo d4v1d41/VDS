@@ -1,0 +1,12 @@
+li a {
+    color: white;
+}
+
+a:hover {
+    color: black;
+    font-size: 23px;
+    text-shadow: 2px 0 0 white;
+}
+body {
+    background: white url("images/background.gif") no-repeat right bottom;
+}

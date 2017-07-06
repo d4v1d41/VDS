@@ -10,6 +10,8 @@ from .forms import CommentForm
 from django.shortcuts import redirect
 from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
+
+
 def index(request):
     biggy = Bigc.objects.all()
     infos = Infolink.objects.filter(published_date__lte=timezone.now()).order_by('published_date')[::-1]
@@ -27,14 +29,18 @@ def index(request):
 
 
 def detail(request, post_id):
+    biggy = Bigc.objects.all()
     infos = Infolink.objects.filter(published_date__lte=timezone.now()).order_by('published_date')[::-1]
     post = get_object_or_404(Post, pk=post_id)
-    return render(request, 'blog/detail.html',{'post': post,'infos':infos})
+    return render(request, 'blog/detail.html',{'post': post,'infos': infos, 'biggy': biggy})
+
 
 def infol(request, info_id):
+    biggy = Bigc.objects.all()
     info =get_object_or_404(Infolink, pk=info_id)
     infos = Infolink.objects.filter(published_date__lte=timezone.now()).order_by('published_date')[::-1]
-    return render(request, 'blog/infol.html',{'info': info, 'infos': infos})
+    return render(request, 'blog/infol.html',{'info': info, 'infos': infos, 'biggy':biggy})
+
 
 def add_comment_to_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
@@ -48,11 +54,14 @@ def add_comment_to_post(request, post_id):
     else:
         form = CommentForm()
     return render(request, 'blog/add_comment_to_post.html', {'form': form})
+
+
 @login_required
 def comment_approve(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     comment.approve()
     return redirect('blog:detail', comment.post_id)
+
 
 @login_required
 def comment_remove(request, comment_id):

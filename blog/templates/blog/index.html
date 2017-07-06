@@ -113,6 +113,7 @@
                 {% for post in posts %}<div class="col-sm-4 wow fadeInDown text-center">
 				  <img class="rotate" src="{{ MEDIA_URL }}{{ post.image_for_preview.url }}" alt="Generic placeholder image" width="100px" height="100px">
                   <a href="{% url 'blog:detail' post.id %}"><h3>{{ post.title }}</h3></a>
+                  <a href="{% url 'blog:detail' post.id %}">{{ post.published_date }} Comentarios: {{ post.comments.count }} <br>Autor: {{ post.author }}</a>
 				  <p class="lead">{{ post.text|safe|linebreaksbr|truncatechars:100 }} </p>
 
 				  <!-- <p><a class="btn btn-embossed btn-primary view" role="button">View Details</a></p> -->

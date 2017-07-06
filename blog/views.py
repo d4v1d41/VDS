@@ -6,6 +6,10 @@ from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Infolink
 from .models import Bigc
+from .forms import CommentForm
+from django.shortcuts import redirect
+from .models import Post, Comment
+from django.contrib.auth.decorators import login_required
 def index(request):
     biggy = Bigc.objects.all()
     infos = Infolink.objects.filter(published_date__lte=timezone.now()).order_by('published_date')[::-1]
@@ -31,3 +35,27 @@ def infol(request, info_id):
     info =get_object_or_404(Infolink, pk=info_id)
     infos = Infolink.objects.filter(published_date__lte=timezone.now()).order_by('published_date')[::-1]
     return render(request, 'blog/infol.html',{'info': info, 'infos': infos})
+
+def add_comment_to_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('blog:detail', post_id)
+    else:
+        form = CommentForm()
+    return render(request, 'blog/add_comment_to_post.html', {'form': form})
+@login_required
+def comment_approve(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.approve()
+    return redirect('blog:detail', comment.post_id)
+
+@login_required
+def comment_remove(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.delete()
+    return redirect('blog:detail', comment.post_id)

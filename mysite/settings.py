@@ -24,7 +24,7 @@ SECRET_KEY = 'i1hwn27--h57(#eej(q&(&&lfxth@c48j$+wplxkd1chspzbw1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+LOGIN_URL = "/accounts/login/"
 ALLOWED_HOSTS = []
 
 CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
